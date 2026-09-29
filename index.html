@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>교실 쾌적 지킴이 - 페브리즘 타임</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts - Pretendard/Noto Sans KR -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Noto Sans KR', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0369a1',
+            },
+            fresh: {
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+      min-height: 100vh;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    }
+
+    .btn-bounce:active {
+      transform: scale(0.97);
+    }
+
+    @keyframes windSweep {
+      0% { opacity: 0.3; transform: scale(0.98); }
+      50% { opacity: 0.85; transform: scale(1.01); }
+      100% { opacity: 0.3; transform: scale(0.98); }
+    }
+
+    .fan-wind-bg {
+      animation: windSweep 2.5s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased py-6 px-3 sm:px-4 md:py-10">
+
+  <div class="max-w-2xl mx-auto">
+    
+    <!-- Main App Card -->
+    <div class="glass-card rounded-3xl p-5 sm:p-8 transition-all duration-300">
+      
+      <!-- App Header Badge -->
+      <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="bg-sky-100 text-sky-700 font-extrabold text-xs px-3 py-1.5 rounded-full flex items-center gap-1">
+            <i class="fa-solid fa-wind text-sky-500"></i> 중3 전용 쾌적 가이드
+          </span>
+        </div>
+        <div id="stepCounter" class="text-xs font-bold text-slate-400 hidden">
+          <span id="currentStepNum" class="text-sky-600 font-extrabold">1</span> / 5 STEP
+        </div>
+      </div>
+
+      <div id="progressBarContainer" class="w-full bg-slate-100 h-2.5 rounded-full mb-6 overflow-hidden hidden">
+        <div id="progressBar" class="bg-gradient-to-r from-sky-400 to-emerald-400 h-full w-0 transition-all duration-500 rounded-full"></div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- LANDING / WELCOME SCREEN (Step 0) -->
+      <!-- ========================================== -->
+      <div id="step0" class="step-card fade-in">
+        <div class="text-center my-4">
+          <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-tr from-sky-400 to-emerald-300 text-white rounded-3xl shadow-lg shadow-sky-200 mb-5 animate-bounce">
+            <span class="text-4xl">💨</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-snug mb-3">
+            교실 쾌적 지킴이<br>
+            <span class="bg-gradient-to-r from-sky-600 to-emerald-500 bg-clip-text text-transparent">페브리즘 타임</span>
+          </h1>
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mx-auto">
+            체육시간 직후, 후끈해진 교실과 선풍기 바람을 타고 퍼지는 땀냄새! 😱<br>
+            <strong>언제, 어디서, 어떻게</strong> 페브리즘을 뿌려야 가장 효과적일까요? 우리 반 최적의 쾌적 솔루션을 찾아드립니다!
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-8">
+          <div class="p-4 rounded-2xl bg-sky-50/70 border border-sky-100 text-center">
+            <div class="text-2xl mb-1">🎯</div>
+            <div class="font-bold text-sky-900 text-sm">시간표 분석</div>
+            <div class="text-xs text-sky-600/80 mt-1">오늘 체육 & 활동 시간대 연동</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-100 text-center">
+            <div class="text-2xl mb-1">🌀</div>
+            <div class="font-bold text-emerald-900 text-sm">3분단 배치도</div>
+            <div class="text-xs text-emerald-600/80 mt-1">가로 3~5줄 선풍기 바람길 계산</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-100 text-center">
+            <div class="text-2xl mb-1">💡</div>
+            <div class="font-bold text-amber-900 text-sm">맞춤 솔루션</div>
+            <div class="text-xs text-amber-600/80 mt-1">페브리즘 유무별 대처 팁 제공</div>
+          </div>
+        </div>
+
+        <button onclick="startApp()" class="btn-bounce w-full py-4 px-6 bg-gradient-to-r from-sky-500 to-emerald-400 hover:from-sky-600 hover:to-emerald-500 text-white font-extrabold text-lg rounded-2xl shadow-xl shadow-sky-200 flex items-center justify-center gap-3 transition-all duration-200">
+          <span>우리 반 쾌적 지수 분석 시작하기</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- STEP 1: 오늘 시간표 (체육 수업) -->
+      <!-- ========================================== -->
+      <div id="step1" class="step-card hidden">
+        <div class="mb-6">
+          <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">STEP 1</span>
+          <h2 class="text-xl font-bold text-slate-800 mt-1">오늘 체육 수업이 있는 교시는 언제인가요?</h2>
+          <p class="text-xs text-slate-500 mt-1">해당되는 교시를 모두 선택해 주세요. (중복 선택 가능)</p>
+        </div>
+
+        <div class="grid grid-cols-3 sm:grid-cols-6 gap-2.5 mb-6" id="peGrid">
+          <button type="button" onclick="toggleSelect(this, 'pe', 1)" class="time-btn p-3.5 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50 font-bold text-slate-700 text-center transition">1교시</button>
+          <button type="button" onclick="toggleSelect(this, 'pe', 2)" class="time-btn p-3.5 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50 font-bold text-slate-700 text-center transition">2교시</button>
+          <button type="button" onclick="toggleSelect(this, 'pe', 3)" class="time-btn p-3.5 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50 font-bold text-slate-700 text-center transition">3교시</button>
+          <button type="button" onclick="toggleSelect(this, 'pe', 4)" class="time-btn p-3.5 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50 font-bold text-slate-700 text-center transition">4교시</button>
+          <button type="button" onclick="toggleSelect(this, 'pe', 5)" class="time-btn p-3.5 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50 font-bold text-slate-700 text-center transition">5교시</button>
+          <button type="button" onclick="toggleSelect(this, 'pe', 6)" class="time-btn p-3.5 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50 font-bold text-slate-700 text-center transition">6교시</button>
+        </div>
+
+        <div class="p-3 bg-slate-50 rounded-xl text-xs text-slate-500 flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-sky-500"></i>
+          <span>오늘 체육이 없는 날이라면 아무것도 선택하지 않고 다음을 누르세요.</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- STEP 2: 쉬는시간 활동 시간대 -->
+      <!-- ========================================== -->
+      <div id="step2" class="step-card hidden">
+        <div class="mb-6">
+          <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">STEP 2</span>
+          <h2 class="text-xl font-bold text-slate-800 mt-1">반 친구들이 쉬는 시간에 운동하는 시간대는?</h2>
+          <p class="text-xs text-slate-500 mt-1">축구, 농구, 복도 활동 등 땀을 흘리는 시간대를 선택하세요.</p>
+        </div>
+
+        <div class="space-y-2.5 mb-6">
+          <button type="button" onclick="toggleSelect(this, 'break', 'morning')" class="break-btn w-full p-4 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50 font-bold text-slate-700 text-left flex items-center justify-between transition">
+            <span class="flex items-center gap-3">🌅 아침 등교 / 자습 시간</span>
+            <i class="fa-solid fa-check check-icon text-transparent"></i>
+          </button>
+          <button type="button" onclick="toggleSelect(this, 'break', 'lunch')" class="break-btn w-full p-4 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50 font-bold text-slate-700 text-left flex items-center justify-between transition">
+            <span class="flex items-center gap-3">⚽ 점심시간 (운동장 축구/농구)</span>
+            <i class="fa-solid fa-check check-icon text-transparent"></i>
+          </button>
+          <button type="button" onclick="toggleSelect(this, 'break', 'break15')" class="break-btn w-full p-4 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50 font-bold text-slate-700 text-left flex items-center justify-between transition">
+            <span class="flex items-center gap-3">🏃 쉬는시간 복도 활동 및 짧은 운동</span>
+            <i class="fa-solid fa-check check-icon text-transparent"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- STEP 3: 내 자리 선택 (3분단 교실 좌석) -->
+      <!-- ========================================== -->
+      <div id="step3" class="step-card hidden">
+        <div class="mb-4">
+          <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">STEP 3</span>
+          <h2 class="text-xl font-bold text-slate-800 mt-1">내 자리 위치를 선택해 주세요</h2>
+          <p class="text-xs text-slate-500 mt-1">3개 분단(총 40석) 중 본인 좌석 번호를 클릭하세요.</p>
+        </div>
+
+        <!-- Board & Front indicators -->
+        <div class="w-full bg-slate-800 text-white font-bold text-center py-2 rounded-xl mb-3 text-xs tracking-widest shadow-inner">
+          [ 칠 판 (앞문 방향) ]
+        </div>
+
+        <!-- 3-Column Classroom Seat Structure Container -->
+        <div class="relative bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-200 mb-4 overflow-hidden">
+          
+          <!-- Column Labels -->
+          <div class="grid grid-cols-3 text-center text-[11px] font-extrabold text-slate-500 mb-2 pb-1 border-b border-slate-200">
+            <div class="text-sky-700"><i class="fa-solid fa-window-maximize"></i> 1분단 (창문)</div>
+            <div class="text-indigo-700"><i class="fa-solid fa-arrows-to-dot"></i> 2분단 (중앙)</div>
+            <div class="text-emerald-700"><i class="fa-solid fa-door-open"></i> 3분단 (복도)</div>
+          </div>
+
+          <!-- Seats Grid: 3 Columns -->
+          <div class="grid grid-cols-3 gap-2 sm:gap-3" id="classroomColumns">
+            <!-- 1분단 Column -->
+            <div class="space-y-1.5" id="col1">
+              <div class="text-[10px] text-slate-400 text-center font-bold">1분단 (7줄)</div>
+            </div>
+            <!-- 2분단 Column -->
+            <div class="space-y-1.5" id="col2">
+              <div class="text-[10px] text-slate-400 text-center font-bold">2분단 (7줄)</div>
+            </div>
+            <!-- 3분단 Column -->
+            <div class="space-y-1.5" id="col3">
+              <div class="text-[10px] text-slate-400 text-center font-bold">3분단 (6줄)</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Fan Zone Legend -->
+        <div class="flex flex-wrap items-center justify-between text-xs text-slate-500 px-1 gap-2">
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-md bg-sky-500 inline-block"></span> 선택된 자리</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-md bg-sky-100 border border-sky-400 inline-block"></span> 🌀 선풍기 바람길 (가로 3~5줄)</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- STEP 4: 페브리즘 향 선택 -->
+      <!-- ========================================== -->
+      <div id="step4" class="step-card hidden">
+        <div class="mb-6">
+          <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">STEP 4</span>
+          <h2 class="text-xl font-bold text-slate-800 mt-1">갖고 있는 페브리즘 향은 무엇인가요?</h2>
+          <p class="text-xs text-slate-500 mt-1">향의 종류와 탈취 강도에 따라 최적의 뿌리기 방법이 적용됩니다.</p>
+        </div>
+
+        <div class="space-y-3 mb-6">
+          <div onclick="selectScent(this, '비누향')" class="scent-card p-4 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50/80 cursor-pointer transition flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="text-2xl">🧼</div>
+              <div>
+                <div class="font-bold text-slate-800 text-sm">상쾌한 비누향</div>
+                <div class="text-xs text-slate-400">호불호 없는 은은함 · 탈취 강도 [보통]</div>
+              </div>
+            </div>
+            <div class="radio-dot w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center">
+              <div class="w-2.5 h-2.5 bg-sky-500 rounded-full hidden"></div>
+            </div>
+          </div>
+
+          <div onclick="selectScent(this, '시트러스향')" class="scent-card p-4 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50/80 cursor-pointer transition flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="text-2xl">🍋</div>
+              <div>
+                <div class="font-bold text-slate-800 text-sm">상큼한 자몽/레몬시트러스</div>
+                <div class="text-xs text-slate-400">강력한 기분 전환 · 탈취 강도 [강함]</div>
+              </div>
+            </div>
+            <div class="radio-dot w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center">
+              <div class="w-2.5 h-2.5 bg-sky-500 rounded-full hidden"></div>
+            </div>
+          </div>
+
+          <div onclick="selectScent(this, '무향')" class="scent-card p-4 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50/80 cursor-pointer transition flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="text-2xl">🍃</div>
+              <div>
+                <div class="font-bold text-slate-800 text-sm">순수 탈취용 무향</div>
+                <div class="text-xs text-slate-400">냄새 근본 제거 · 탈취 강도 [자연식]</div>
+              </div>
+            </div>
+            <div class="radio-dot w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center">
+              <div class="w-2.5 h-2.5 bg-sky-500 rounded-full hidden"></div>
+            </div>
+          </div>
+
+          <div onclick="selectScent(this, '없음')" class="scent-card p-4 border border-slate-200 rounded-2xl bg-white hover:bg-sky-50/80 cursor-pointer transition flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="text-2xl">🚫</div>
+              <div>
+                <div class="font-bold text-slate-800 text-sm">없음 (소장한 페브리즘 없음)</div>
+                <div class="text-xs text-slate-400">맞바람 환기 및 선풍기 방향 대처법 안내</div>
+              </div>
+            </div>
+            <div class="radio-dot w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center">
+              <div class="w-2.5 h-2.5 bg-sky-500 rounded-full hidden"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- STEP 5: AI 분석 결과 리포트 -->
+      <!-- ========================================== -->
+      <div id="step5" class="step-card hidden">
+        <div class="text-center mb-6">
+          <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">ANALYSIS REPORT</span>
+          <h2 class="text-2xl font-black text-slate-800 mt-1">오늘의 교실 쾌적 리포트</h2>
+        </div>
+
+        <div id="riskCard" class="p-6 rounded-3xl mb-6 text-center shadow-sm transition">
+          <div id="riskBadge" class="inline-block px-4 py-1.5 rounded-full text-xs font-extrabold mb-2">
+            🚨 분석 중...
+          </div>
+          <div id="riskTitle" class="text-xl font-extrabold text-slate-800 mb-1">
+            계산 중입니다...
+          </div>
+          <p id="riskSubtitle" class="text-xs text-slate-600">
+            입력하신 데이터를 기반으로 교실 악취 위험도를 분석하고 있습니다.
+          </p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 space-y-4 text-sm text-slate-700 mb-6">
+          <div class="flex items-start gap-3">
+            <div class="p-2 bg-sky-100 text-sky-600 rounded-xl mt-0.5"><i class="fa-solid fa-clock"></i></div>
+            <div>
+              <div class="font-bold text-slate-400 text-xs">골든 타임 (최적 시간)</div>
+              <div id="resTiming" class="font-bold text-slate-800 mt-0.5">-</div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <div class="p-2 bg-emerald-100 text-emerald-600 rounded-xl mt-0.5"><i class="fa-solid fa-location-dot"></i></div>
+            <div>
+              <div class="font-bold text-slate-400 text-xs">타겟 위치</div>
+              <div id="resLocation" class="font-bold text-slate-800 mt-0.5">-</div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <div class="p-2 bg-purple-100 text-purple-600 rounded-xl mt-0.5"><i class="fa-solid fa-lightbulb"></i></div>
+            <div>
+              <div class="font-bold text-slate-400 text-xs">맞춤 미션 & 팁</div>
+              <div id="resAction" class="text-slate-700 leading-relaxed mt-0.5 text-xs sm:text-sm">-</div>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="restartApp()" class="btn-bounce w-full py-3.5 px-4 bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm rounded-2xl shadow-md flex items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span>다시 테스트하기</span>
+        </button>
+      </div>
+
+      <!-- Navigation Controls -->
+      <div id="navButtons" class="flex items-center justify-between mt-8 pt-4 border-t border-slate-100 hidden">
+        <button id="prevBtn" onclick="moveStep(-1)" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-sm transition disabled:opacity-40 disabled:cursor-not-allowed">
+          <i class="fa-solid fa-chevron-left mr-1"></i> 이전
+        </button>
+        
+        <button id="nextBtn" onclick="moveStep(1)" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm shadow-md shadow-sky-100 flex items-center gap-1.5 transition">
+          <span>다음</span>
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-6 text-xs text-slate-400">
+      <p>중3 교실 쾌적 환경 조성 프로젝트 · 냄새 없는 클린 교실 만들기</p>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 0;
+    
+    const userData = {
+      peLessons: [],
+      playTimes: [],
+      seatIndex: null,
+      scent: null
+    };
+
+    // Row 3~5 seat numbers definition
+    // 1분단: Row 3(5,6), Row 4(7,8), Row 5(9,10)
+    // 2분단: Row 3(19,20), Row 4(21,22), Row 5(23,24)
+    // 3분단: Row 3(33,34), Row 4(35,36), Row 5(37,38)
+    const fanZoneSeats = [5, 6, 7, 8, 9, 10, 19, 20, 21, 22, 23, 24, 33, 34, 35, 36, 37, 38];
+
+    // Build seats dynamically
+    function renderSeats() {
+      const col1 = document.getElementById('col1');
+      const col2 = document.getElementById('col2');
+      const col3 = document.getElementById('col3');
+
+      // 1분단 (1~14번: 2명 x 7줄)
+      buildColumnSeats(col1, 1, 14, 7);
+      // 2분단 (15~28번: 2명 x 7줄)
+      buildColumnSeats(col2, 15, 28, 7);
+      // 3분단 (29~40번: 2명 x 6줄)
+      buildColumnSeats(col3, 29, 40, 6);
+    }
+
+    function buildColumnSeats(container, startNum, endNum, rowCount) {
+      let seatNum = startNum;
+      for (let r = 1; r <= rowCount; r++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'grid grid-cols-2 gap-1';
+
+        for (let c = 0; c < 2; c++) {
+          if (seatNum > endNum) break;
+          const currentNum = seatNum;
+          const isFanZone = fanZoneSeats.includes(currentNum);
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `seat-btn p-1.5 sm:p-2 border rounded-xl font-bold text-[11px] sm:text-xs text-center transition flex flex-col items-center justify-center ${
+            isFanZone 
+              ? 'border-sky-300 bg-sky-100/70 text-sky-900 hover:bg-sky-200' 
+              : 'border-slate-200 bg-white text-slate-700 hover:border-sky-300'
+          }`;
+          
+          btn.innerHTML = `<span>${currentNum}번</span>${isFanZone ? '<span class="text-[9px] text-sky-600 font-normal">🌀</span>' : ''}`;
+          btn.onclick = () => selectSeat(btn, currentNum);
+
+          rowDiv.appendChild(btn);
+          seatNum++;
+        }
+        container.appendChild(rowDiv);
+      }
+    }
+
+    function startApp() {
+      document.getElementById('step0').classList.add('hidden');
+      document.getElementById('stepCounter').classList.remove('hidden');
+      document.getElementById('progressBarContainer').classList.remove('hidden');
+      document.getElementById('navButtons').classList.remove('hidden');
+      currentStep = 1;
+      updateStepView();
+    }
+
+    function moveStep(dir) {
+      if (currentStep + dir < 1 || currentStep + dir > 5) return;
+      currentStep += dir;
+      updateStepView();
+    }
+
+    function updateStepView() {
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`step${i}`).classList.add('hidden');
+        document.getElementById(`step${i}`).classList.remove('fade-in');
+      }
+
+      const activeCard = document.getElementById(`step${currentStep}`);
+      activeCard.classList.remove('hidden');
+      activeCard.classList.add('fade-in');
+
+      document.getElementById('currentStepNum').innerText = currentStep;
+      document.getElementById('progressBar').style.width = `${(currentStep / 5) * 100}%`;
+
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      prevBtn.disabled = (currentStep === 1);
+
+      if (currentStep === 5) {
+        nextBtn.classList.add('hidden');
+        analyzeOdorScore();
+      } else {
+        nextBtn.classList.remove('hidden');
+      }
+    }
+
+    function toggleSelect(el, type, value) {
+      const isPe = type === 'pe';
+      const targetArr = isPe ? userData.peLessons : userData.playTimes;
+      const index = targetArr.indexOf(value);
+
+      if (index > -1) {
+        targetArr.splice(index, 1);
+        el.classList.remove('bg-sky-500', 'text-white', 'border-sky-500');
+        el.classList.add('bg-white', 'text-slate-700', 'border-slate-200');
+        if (!isPe) {
+          const icon = el.querySelector('.check-icon');
+          if (icon) icon.classList.replace('text-white', 'text-transparent');
+        }
+      } else {
+        targetArr.push(value);
+        el.classList.add('bg-sky-500', 'text-white', 'border-sky-500');
+        el.classList.remove('bg-white', 'text-slate-700', 'border-slate-200');
+        if (!isPe) {
+          const icon = el.querySelector('.check-icon');
+          if (icon) icon.classList.replace('text-transparent', 'text-white');
+        }
+      }
+    }
+
+    function selectSeat(btn, index) {
+      document.querySelectorAll('.seat-btn').forEach(b => {
+        b.classList.remove('bg-sky-600', 'text-white', 'border-sky-600', 'shadow-md');
+      });
+      btn.classList.add('bg-sky-600', 'text-white', 'border-sky-600', 'shadow-md');
+      userData.seatIndex = index;
+    }
+
+    function selectScent(card, scentType) {
+      document.querySelectorAll('.scent-card').forEach(c => {
+        c.classList.remove('border-sky-500', 'bg-sky-50/70');
+        const dot = c.querySelector('.radio-dot div');
+        if (dot) dot.classList.add('hidden');
+      });
+
+      card.classList.add('border-sky-500', 'bg-sky-50/70');
+      const dot = card.querySelector('.radio-dot div');
+      if (dot) dot.classList.remove('hidden');
+
+      userData.scent = scentType;
+    }
+
+    function analyzeOdorScore() {
+      let score = 0;
+
+      if (userData.peLessons.length > 0) {
+        score += userData.peLessons.length * 35;
+      }
+
+      if (userData.playTimes.includes('lunch')) score += 25;
+      if (userData.playTimes.includes('break15')) score += 15;
+      if (userData.playTimes.includes('morning')) score += 10;
+
+      const isInFanZone = fanZoneSeats.includes(userData.seatIndex);
+      if (isInFanZone) {
+        score *= 1.3; // 1.3x multiplier for fan wind path
+      }
+
+      const riskCard = document.getElementById('riskCard');
+      const riskBadge = document.getElementById('riskBadge');
+      const riskTitle = document.getElementById('riskTitle');
+      const riskSubtitle = document.getElementById('riskSubtitle');
+      const resTiming = document.getElementById('resTiming');
+      const resLocation = document.getElementById('resLocation');
+      const resAction = document.getElementById('resAction');
+
+      const hasScent = userData.scent && userData.scent !== '없음';
+
+      if (score >= 65) {
+        riskCard.className = "p-6 rounded-3xl mb-6 text-center bg-rose-50 border border-rose-200 shadow-sm";
+        riskBadge.className = "inline-block px-4 py-1.5 rounded-full text-xs font-extrabold mb-2 bg-rose-100 text-rose-700";
+        riskBadge.innerText = "🚨 [경보] 쾌적함 비상 단계";
+        riskTitle.innerText = "교실 악취 위험도 최고 수준!";
+        riskSubtitle.innerText = "체육 수업 및 주요 운동 시간으로 인해 선풍기 바람을 타고 냄새가 빠르게 확산될 수 있습니다.";
+
+        resTiming.innerText = userData.peLessons.length > 0 
+          ? `${userData.peLessons.join(', ')}교시 체육 수업 종료 직후 쉬는시간`
+          : '점심시간 종료 10분 전 및 주요 쉬는시간';
+
+        resLocation.innerText = isInFanZone 
+          ? `선풍기 바람 직접 영향권(가로 3~5줄) 및 내 자리(${userData.seatIndex || '선택'}번) 주위`
+          : '가로 3~5줄 선풍기 바람길 입구 및 중앙 통로';
+
+        if (hasScent) {
+          resAction.innerHTML = `선택하신 <b>[${userData.scent}]</b>을(를) 선풍기 바람이 출발하는 <b>가로 3~5줄 근처</b>에서 공중을 향해 <b>3~4회 강하게 분사</b>하세요! 선풍기 바람을 타고 교실 전체로 쾌적함이 분산됩니다.`;
+        } else {
+          resAction.innerHTML = `<b>🚫 소장한 페브리즘이 없는 경우 대처법:</b><br>
+          1. 체육 수업 직후 <b>창문과 앞·뒷문을 완전히 개방</b>하여 교실 내 대류를 일으키세요.<br>
+          2. 선풍기를 창문 방향으로 돌려 내부의 덥고 습한 공기를 강제 배출하세요.<br>
+          3. 가로 3~5줄 바람길 구역에 앉은 친구에게 <b>페브리즘 긴급 협조</b>를 요청하세요!`;
+        }
+
+      } else if (score >= 30) {
+        riskCard.className = "p-6 rounded-3xl mb-6 text-center bg-amber-50 border border-amber-200 shadow-sm";
+        riskBadge.className = "inline-block px-4 py-1.5 rounded-full text-xs font-extrabold mb-2 bg-amber-100 text-amber-800";
+        riskBadge.innerText = "⚠️ [주의] 냄새 발생 주의 단계";
+        riskTitle.innerText = "은은한 땀냄새 주의 필요!";
+        riskSubtitle.innerText = "활동 후 교실 내 공기가 다소 답답해질 수 있는 상태입니다.";
+
+        resTiming.innerText = "점심시간 끝나기 5분 전 또는 체육 후 쉬는시간";
+        resLocation.innerText = "가로 3~5줄 중앙 통로 및 내 자리 근처";
+
+        if (hasScent) {
+          resAction.innerHTML = `선택하신 <b>[${userData.scent}]</b>을(를) 공중에 <b>2회 가볍게 분사</b>해 공기를 순환시켜 주세요. 45도 위쪽 공중에 분사하는 것이 가장 효과적입니다.`;
+        } else {
+          resAction.innerHTML = `<b>🍃 페브리즘이 없어도 걱정 마세요!</b><br>
+          쉬는시간 10분 동안 <b>창문 2개를 1/3씩 열어두는 자연 환기</b>만으로도 쾌적함을 충분히 유지할 수 있습니다.`;
+        }
+
+      } else {
+        riskCard.className = "p-6 rounded-3xl mb-6 text-center bg-emerald-50 border border-emerald-200 shadow-sm";
+        riskBadge.className = "inline-block px-4 py-1.5 rounded-full text-xs font-extrabold mb-2 bg-emerald-100 text-emerald-800";
+        riskBadge.innerText = "🌿 [안심] 쾌적한 상태 유지";
+        riskTitle.innerText = "오늘 교실 환경은 매우 쾌적합니다!";
+        riskSubtitle.innerText = "특별한 악취 요인이 적어 안심하셔도 좋은 날입니다.";
+
+        resTiming.innerText = "자유로운 시간대 (기분 전환 시)";
+        resLocation.innerText = "내 책상 주변";
+
+        if (hasScent) {
+          resAction.innerHTML = `상태가 아주 좋습니다! 내 자리에만 <b>[${userData.scent}]</b>을(를) 1회 살짝 뿌려 상쾌하게 활용해 보세요.`;
+        } else {
+          resAction.innerHTML = `오늘 교실 공기는 아주 깨끗합니다! 추가 조치 없이 즐거운 학교 생활을 하시면 됩니다. 😊`;
+        }
+      }
+    }
+
+    function restartApp() {
+      userData.peLessons = [];
+      userData.playTimes = [];
+      userData.seatIndex = null;
+      userData.scent = null;
+
+      document.querySelectorAll('.time-btn, .break-btn').forEach(b => {
+        b.classList.remove('bg-sky-500', 'text-white', 'border-sky-500');
+        b.classList.add('bg-white', 'text-slate-700', 'border-slate-200');
+      });
+      document.querySelectorAll('.check-icon').forEach(i => i.classList.replace('text-white', 'text-transparent'));
+      document.querySelectorAll('.seat-btn').forEach(b => b.classList.remove('bg-sky-600', 'text-white', 'border-sky-600', 'shadow-md'));
+      document.querySelectorAll('.scent-card').forEach(c => {
+        c.classList.remove('border-sky-500', 'bg-sky-50/70');
+        const dot = c.querySelector('.radio-dot div');
+        if (dot) dot.classList.add('hidden');
+      });
+
+      currentStep = 0;
+      document.getElementById('step5').classList.add('hidden');
+      document.getElementById('step0').classList.remove('hidden');
+      document.getElementById('step0').classList.add('fade-in');
+      document.getElementById('stepCounter').classList.add('hidden');
+      document.getElementById('progressBarContainer').classList.add('hidden');
+      document.getElementById('navButtons').classList.add('hidden');
+    }
+
+    // Initialize layout on load
+    window.onload = function() {
+      renderSeats();
+    };
+  </script>
+</body>
+</html>
